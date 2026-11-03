@@ -1,4 +1,4 @@
-# 一键安装 rustsilk-skill 仓库内全部 Skill
+# 一键安装 rustsilk-skills 仓库内全部 Skill
 # 用法:
 #   .\scripts\install.ps1                 # 用户级 Cursor（默认）
 #   .\scripts\install.ps1 -Target Codex
@@ -18,8 +18,8 @@ function Install-Skills {
     param([string]$DestBase)
 
     $pairs = @(
-        @{ Src = "rustsilk-skill-easy-query"; Name = "rustsilk-easy-query" },
-        @{ Src = "rustsilk-skill-mybatis-plus"; Name = "rustsilk-mybatis-plus" }
+        @{ Src = "rustsilk-skills-easy-query"; Name = "rustsilk-easy-query" },
+        @{ Src = "rustsilk-skills-mybatis-plus"; Name = "rustsilk-mybatis-plus" }
     )
 
     New-Item -ItemType Directory -Force -Path $DestBase | Out-Null
@@ -47,7 +47,7 @@ function Get-DestBase {
     }
 }
 
-Write-Host "rustsilk-skill 安装脚本"
+Write-Host "rustsilk-skills 安装脚本"
 Write-Host "仓库: $Root"
 Write-Host ""
 

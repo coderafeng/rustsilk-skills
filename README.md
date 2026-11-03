@@ -1,8 +1,8 @@
-# rustsilk-skill
+# rustsilk-skills
 
 面向 **Cursor / Codex / Claude Code Agent** 的 Java 领域 Skill 集合，帮助 AI 在编码场景中准确回答框架使用、配置与排错问题，减少 API 幻觉与空泛建议。
 
-- 仓库内每个子目录为一个独立 Skill，命名前缀 **`rustsilk-skill-*`**
+- 仓库内每个子目录为一个独立 Skill，命名前缀 **`rustsilk-skills-*`**
 - 每个 Skill 含 **`SKILL.md`**（核心约束与回答流程）及可选 **`references/`**（按需展开的专题文档）
 - 默认服务 **中文 Java 开发者**，**Spring Boot 优先**，编码示例优先于概念介绍
 
@@ -15,7 +15,7 @@
 | `rustsilk-easy-query` | `eq`、`easy-query`、`EasyEntityQuery`、`easyEntityQuery`、`Navigate`、`selectAutoInclude`、`include`、`toSQLResult` | easy-query ORM：DSL、`EasyEntityQuery`、Navigate 导航、DTO/结构化返回、SQL 预览、`asTreeCTE`、代理/`@EntityProxy`/`sql-processor`、Spring Boot 配置与排错。 |
 | `rustsilk-mybatis-plus` | `mybatis`、`mybatis-plus`、`MP`、`MPJ`、`baomidou`、`selectJoinList`、`MPJLambdaWrapper` | MyBatis-Plus + MPJ：Wrapper、分页、`MPJBaseMapper`、连表与 `selectCollection`、SQL 日志、starter/jsqlparser、连表 DTO 与排错。 |
 
-> 源码目录：`rustsilk-skill-<主题>/`。新增 Skill 时创建对应子目录并追加一行。
+> 源码目录：`rustsilk-skills-<主题>/`。新增 Skill 时创建对应子目录并追加一行。
 
 ### 如何选择 Skill
 
@@ -32,7 +32,7 @@
 ## 目录结构
 
 ```
-rustsilk-skill/
+rustsilk-skills/
 ├── README.md
 ├── vendor/
 │   ├── versions.json           # 保留版本清单（入库）
@@ -43,7 +43,7 @@ rustsilk-skill/
 │   ├── install.ps1
 │   ├── sync-vendor-sources.sh   # Maven sources → vendor/
 │   └── scan-pom-versions.py     # 扫描 pom 更新 versions.json
-├── rustsilk-skill-easy-query/
+├── rustsilk-skills-easy-query/
 │   ├── SKILL.md
 │   └── references/
 │       ├── core-api.md
@@ -54,7 +54,7 @@ rustsilk-skill/
 │       ├── cte-and-tree.md
 │       ├── troubleshooting.md
 │       └── plugin-and-apt.md
-├── rustsilk-skill-mybatis-plus/
+├── rustsilk-skills-mybatis-plus/
 │   ├── SKILL.md
 │   └── references/
 │       ├── core-api.md
@@ -64,7 +64,7 @@ rustsilk-skill/
 │       ├── dto-mapping.md
 │       ├── sql-preview-and-testing.md
 │       └── troubleshooting.md
-└── rustsilk-skill-xxx/          # 后续 Skill（预留）
+└── rustsilk-skills-xxx/          # 后续 Skill（预留）
 ```
 
 ---
@@ -85,7 +85,7 @@ rustsilk-skill/
 
 ### 一键安装（推荐）
 
-在仓库根目录执行脚本，自动扫描并安装全部 `rustsilk-skill-*` 子目录：
+在仓库根目录执行脚本，自动扫描并安装全部 `rustsilk-skills-*` 子目录：
 
 ```bash
 # Bash — 用户级 Cursor（默认）
@@ -117,7 +117,7 @@ chmod +x scripts/install.sh
 **用户级（Cursor / Codex / Claude）— 三步：**
 
 ```bash
-cd /path/to/rustsilk-skill
+cd /path/to/rustsilk-skills
 git pull origin main
 
 # 与首次安装相同；装过三平台的用 --all
@@ -125,7 +125,7 @@ git pull origin main
 ```
 
 ```powershell
-cd D:\path\to\rustsilk-skill
+cd D:\path\to\rustsilk-skills
 git pull origin main
 .\scripts\install.ps1 -All
 ```
@@ -157,7 +157,7 @@ git add .cursor/skills && git commit -m "chore: update project skills"
 **一行速记：**
 
 ```bash
-cd rustsilk-skill && git pull && ./scripts/install.sh --all
+cd rustsilk-skills && git pull && ./scripts/install.sh --all
 ```
 
 ### 手动安装
@@ -165,20 +165,20 @@ cd rustsilk-skill && git pull && ./scripts/install.sh --all
 ```bash
 # Linux / macOS / Git Bash — Cursor 用户级
 mkdir -p ~/.cursor/skills
-cp -r rustsilk-skill-easy-query ~/.cursor/skills/rustsilk-easy-query
-cp -r rustsilk-skill-mybatis-plus ~/.cursor/skills/rustsilk-mybatis-plus
+cp -r rustsilk-skills-easy-query ~/.cursor/skills/rustsilk-easy-query
+cp -r rustsilk-skills-mybatis-plus ~/.cursor/skills/rustsilk-mybatis-plus
 
 # 项目级
 mkdir -p .cursor/skills
-cp -r rustsilk-skill-easy-query .cursor/skills/rustsilk-easy-query
-cp -r rustsilk-skill-mybatis-plus .cursor/skills/rustsilk-mybatis-plus
+cp -r rustsilk-skills-easy-query .cursor/skills/rustsilk-easy-query
+cp -r rustsilk-skills-mybatis-plus .cursor/skills/rustsilk-mybatis-plus
 ```
 
 ```powershell
 # Windows PowerShell — Cursor 用户级
 New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.cursor\skills"
-Copy-Item -Recurse rustsilk-skill-easy-query "$env:USERPROFILE\.cursor\skills\rustsilk-easy-query"
-Copy-Item -Recurse rustsilk-skill-mybatis-plus "$env:USERPROFILE\.cursor\skills\rustsilk-mybatis-plus"
+Copy-Item -Recurse rustsilk-skills-easy-query "$env:USERPROFILE\.cursor\skills\rustsilk-easy-query"
+Copy-Item -Recurse rustsilk-skills-mybatis-plus "$env:USERPROFILE\.cursor\skills\rustsilk-mybatis-plus"
 ```
 
 ### 各平台路径
@@ -198,9 +198,9 @@ Copy-Item -Recurse rustsilk-skill-mybatis-plus "$env:USERPROFILE\.cursor\skills\
 ### 只安装某一个 Skill
 
 ```bash
-cp -r rustsilk-skill-easy-query ~/.cursor/skills/rustsilk-easy-query
+cp -r rustsilk-skills-easy-query ~/.cursor/skills/rustsilk-easy-query
 # 或
-cp -r rustsilk-skill-mybatis-plus ~/.cursor/skills/rustsilk-mybatis-plus
+cp -r rustsilk-skills-mybatis-plus ~/.cursor/skills/rustsilk-mybatis-plus
 ```
 
 ---
@@ -262,7 +262,7 @@ Agent 回答问题时**不会**自动运行 sync，也**不会**要求你每次�
 | 在业务项目里日常问 eq / MP 问题 | **否** | 工作区有 `pom.xml` 时 Agent 自动读版本；无 `vendor/` 也能从 `.m2` 或 GitHub 查证 |
 | 预缓存常用版本，加快离线或重复查证 | 可选 | 将 sources 落到 `vendor/`，减少反复从 Maven Central 下载 |
 | 项目升级依赖后，希望 `vendor/` 与 pom 对齐 | **是** | 见下方 `--scan-pom . --update-manifest` |
-| 维护 rustsilk-skill 仓库、更新 `versions.json` | **是** | 扫业务 pom，或 `--fallback-github` 填默认版本 |
+| 维护 rustsilk-skills 仓库、更新 `versions.json` | **是** | 扫业务 pom，或 `--fallback-github` 填默认版本 |
 | 本机 `.m2` 无 sources、网络不稳定 | 可选 | 提前 sync 到 `vendor/` 可提高查证稳定性 |
 | 需查 `sql-core` 等未进默认 artifacts 的底层包 | 可选 | 单版本 sync，或扩展 `versions.json` 后全量 sync |
 
@@ -274,7 +274,7 @@ Agent 回答问题时**不会**自动运行 sync，也**不会**要求你每次�
 ### 前置
 
 - 已安装 **Maven**、**Python 3**、**unzip**
-- 建议在 **rustsilk-skill 仓库根目录** 执行
+- 建议在 **rustsilk-skills 仓库根目录** 执行
 
 ```bash
 chmod +x scripts/sync-vendor-sources.sh scripts/scan-pom-versions.py
@@ -311,10 +311,10 @@ chmod +x scripts/sync-vendor-sources.sh scripts/scan-pom-versions.py
 **在 Java 业务仓库里开发时**（Cursor 工作区 = 业务项目）：
 
 ```bash
-/path/to/rustsilk-skill/scripts/sync-vendor-sources.sh --scan-pom . --update-manifest
+/path/to/rustsilk-skills/scripts/sync-vendor-sources.sh --scan-pom . --update-manifest
 ```
 
-**维护 rustsilk-skill 本身、无业务 pom 时**：
+**维护 rustsilk-skills 本身、无业务 pom 时**：
 
 ```bash
 ./scripts/sync-vendor-sources.sh --scan-pom . --update-manifest --fallback-github
@@ -381,7 +381,7 @@ Skill 由 Agent **自动触发**，一般无需手动 `@` 引用。
 
 ### 新增 Skill 步骤
 
-1. 创建 `rustsilk-skill-<主题>/`
+1. 创建 `rustsilk-skills-<主题>/`
 2. 编写 `SKILL.md`（frontmatter 含 `name`、`description`；description 写清触发场景）
 3. 专题示例、排查清单放入 `references/`，主文件保持精简（progressive disclosure）
 4. 更新本 README **Skill 列表** 与 **目录结构**
