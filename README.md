@@ -135,7 +135,7 @@ chmod +x scripts/install.sh
 
 ### 更新本地 Skill
 
-本仓库更新后，**已安装的 Skill 不会自动同步**，需手动拉代码并重新安装（安装脚本会先删除旧目录再复制，等同于覆盖更新）。
+本仓库更新后，**已安装的 Skill 不会自动同步**，需手动拉代码并重新安装（安装脚本会先删除旧目录再复制，等同于覆盖更新）。若某个目录你已在集中式技能管理器的 GUI 里导入过，这次覆盖会让管理器的记录与实际内容脱节，切换归属的办法见 [与集中式技能管理器共存](#与集中式技能管理器共存)。
 
 **用户级（Cursor / Codex / Claude）— 三步：**
 
@@ -433,7 +433,7 @@ node rs-easy-query/scripts/link-agents.mjs --agent claude-code,cursor,qoder --sc
 node rs-rec-video/scripts/link-agents.mjs --agent all --scope project --mode copy --apply
 ```
 
-两条路径的区别：`install.sh` / `install.ps1` 只写 Cursor / Codex / Claude 三个用户级目录（需同步改两处名单）；`link-agents.mjs` 按技能目录自定位，覆盖 12 个 agent，且技能被拷进任意项目后仍可用。
+两条路径的区别：`install.sh` / `install.ps1` 只写 Cursor / Codex / Claude 三个平台（用户级目录，或 `--project` 写仓库内 `.cursor/skills/`；新增 Skill 需同步改两处名单）；`link-agents.mjs` 按技能目录自定位，覆盖 12 个 agent，且技能被拷进任意项目后仍可用。
 
 两份公共文件（`agent-compat.md`、`scripts/link-agents.mjs`）在所有 `rs-*` 技能里是生成副本，**不要手工编辑**：
 
@@ -447,7 +447,7 @@ node scripts/sync-agent-compat.mjs --check    # 只校验，漂移则 exit 1（�
 
 #### 与集中式技能管理器共存
 
-**仓库脚本是一条独立完整的安装路径**：`install.sh` / `install.ps1` 默认就把 Cursor、Codex、Claude 全装（`-All` / `--all`），不依赖任何外部工具，clone 下来就能用。集中式技能管理器（如 Skills Manager）只是**可选**的托管层——你随时可以在它的 GUI 里把这些技能同步导入，也可以完全不接这一层。
+**仓库脚本是一条独立完整的安装路径**：`install.sh --all` / `install.ps1 -All` 一次把 Cursor、Codex、Claude 三个平台全装（不带参数则只装用户级 Cursor，见[一键安装](#一键安装推荐)），不依赖任何外部工具，clone 下来就能用。集中式技能管理器（如 Skills Manager）只是**可选**的托管层——你随时可以在它的 GUI 里把这些技能同步导入，也可以完全不接这一层。
 
 两套机制写入同一个目录时会互相覆盖，行为差异要心里有数：
 
