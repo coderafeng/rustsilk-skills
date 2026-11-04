@@ -29,6 +29,8 @@ const AGENTS = {
     'opencode': { label: 'opencode', project: ['.opencode/skills'], user: ['.config/opencode/skills'] },
     'qoder': { label: 'Qoder', project: ['.qoder/skills'], user: ['.qoder/skills'] },
     'qoder-cn': { label: 'Qoder CN', project: ['.qoder/skills'], user: ['.qoder-cn/skills'] },
+    // Qwen Code：用户级 ~/.qwen/skills、项目级 .qwen/skills，见官方文档 https://qwenlm.github.io/qwen-code-docs/zh/users/features/skills/
+    'qwen': { label: 'Qwen Code', project: ['.qwen/skills'], user: ['.qwen/skills'] },
     'deep-code': { label: 'DeepSeek Deep Code', project: ['.deepcode/skills'], user: ['.agents/skills'] },
     'dsh': { label: 'DeepSeek Harness', project: ['.dsh/skills'], user: ['.dsh/skills', '.agents/skills'] },
     'pi': { label: 'pi (Pi Coding Agent)', project: ['.pi/skills'], user: ['.pi/agent/skills', '.agents/skills'] },

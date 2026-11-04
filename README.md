@@ -433,7 +433,7 @@ node rs-easy-query/scripts/link-agents.mjs --agent claude-code,cursor,qoder --sc
 node rs-rec-video/scripts/link-agents.mjs --agent all --scope project --mode copy --apply
 ```
 
-两条路径的区别：`install.sh` / `install.ps1` 只写 Cursor / Codex / Claude 三个用户级目录（需同步改两处名单）；`link-agents.mjs` 按技能目录自定位，覆盖 11 个 agent，且技能被拷进任意项目后仍可用。
+两条路径的区别：`install.sh` / `install.ps1` 只写 Cursor / Codex / Claude 三个用户级目录（需同步改两处名单）；`link-agents.mjs` 按技能目录自定位，覆盖 12 个 agent，且技能被拷进任意项目后仍可用。
 
 两份公共文件（`agent-compat.md`、`scripts/link-agents.mjs`）在所有 `rs-*` 技能里是生成副本，**不要手工编辑**：
 

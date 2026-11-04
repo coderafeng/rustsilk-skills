@@ -14,6 +14,7 @@
 | opencode | `.opencode/skills/`、`.claude/skills/`、`.agents/skills/` | `~/.config/opencode/skills/`、`~/.claude/skills/`、`~/.agents/skills/` | opencode.ai/docs/skills（兼容 Claude 与 agents 目录，未知 frontmatter 字段忽略） |
 | Qoder | `.qoder/skills/` | `~/.qoder/skills/` | docs.qoder.com/zh/cli/Skills |
 | Qoder CN | `.qoder/skills/` | `~/.qoder-cn/skills/`（**带 `-cn` 后缀**，照抄国际版会配错位置） | help.aliyun.com/zh/lingma/qodercli-cn/user-guide/skills |
+| Qwen Code | `.qwen/skills/` | `~/.qwen/skills/` | qwenlm.github.io/qwen-code-docs/zh/users/features/skills（个人级 `~/.qwen/skills/`、项目级 `.qwen/skills/`，用 `ls` 可直接核对；技能由模型按 `description` 自主调用，也可 `/<skill-name>` 显式调用） |
 | DeepSeek Deep Code | `.deepcode/skills/<name>/SKILL.md` | `~/.agents/skills/<name>/SKILL.md` | api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/deepcode |
 | DeepSeek Harness（DSH） | `.dsh/skills/`（优先级高于 `.agents/skills/`） | `~/.dsh/skills/`、`~/.agents/skills/` | DSH 文档与社区实测汇总；另支持 `customSkillDirs` 自定义路径 |
 | pi（Pi Coding Agent） | `.pi/skills/`、`.agents/skills/`（项目须先授予信任） | `~/.pi/agent/skills/`、`~/.agents/skills/` | pi.dev/docs/latest/skills |
