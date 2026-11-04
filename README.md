@@ -445,6 +445,24 @@ node scripts/sync-agent-compat.mjs --check    # 只校验，漂移则 exit 1（�
 
 各 agent 的目录约定、加载差异与已知坑见任一技能下的 `agent-compat.md`。
 
+#### 与集中式技能管理器共存
+
+同一个目录被多套机制写入时会互相覆盖，归属必须按目录划清：
+
+| 机制 | 写入方式 | 遇到不是自己放的同名目录 |
+|---|---|---|
+| `install.sh` / `install.ps1` | **先删后拷**（`rm -rf` / `Remove-Item -Recurse -Force` 再复制） | 直接覆盖，不问来源 |
+| `link-agents.mjs` | 同名目录已存在则**跳过**；`--force` 只把它改名成 `<name>.bak-<时间戳>`，不删文件 | 默认不动 |
+| 技能管理器（如 `skills-manager-cli` 的 deploy / update） | 只写它登记过的受管部署 | 整批拒绝（`TARGET_CONFLICT`），一处冲突就一个都不写 |
+
+> **坑：脚本会砸掉受管副本。** 某个 agent 目录若已由技能管理器托管（例如 Cursor），再跑一次 `install.ps1` / `install.sh` 就把受管副本换成了裸拷贝：内容一样，但管理器记录的目标状态与实际内容不再对应，下次 `update` / `deploy` 轻则报 `TARGET_CONFLICT` 要求你先让位，重则把受管源里的旧内容盖回来。反方向也一样：往脚本负责的目录里 deploy 会被拒绝。
+
+**约定**：一个目录只交给一套机制。作者机器的分工是——技能管理器覆盖它登记的全部 agent（24 个），仓库脚本只补它清单外的 `~/.claude/skills`、`~/.codex/skills`、`~/.qoder-cn/skills`。改完正文按归属分别刷新：
+
+1. 改唯一源 `rs-rec-video/agent-compat.md` 或 `rs-rec-video/scripts/link-agents.mjs`，跑 `node scripts/sync-agent-compat.mjs --apply`
+2. 归技能管理器的目录：`skills update <name>` → `skills deploy <name> --agent …`（本地源按安装时记录的路径重新导入；**导入时必须传绝对路径**，相对路径会把 `source_ref` 记成相对的，之后 `update` 找不到源）
+3. 归仓库脚本的目录：`install.sh` / `install.ps1`，或 `node <skill>/scripts/link-agents.mjs --scope user --apply`
+
 ### 设计原则
 
 | 原则 | 说明 |
