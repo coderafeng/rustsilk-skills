@@ -15,7 +15,7 @@
         "springBoot4": ["sql-api-proxy", "sql-springboot4-starter", "sql-processor"],
         "deepCore": ["sql-core"]
       },
-      "versions": ["3.2.10", "3.2.6", "3.2.5"],
+      "versions": ["3.2.17"],
       "githubModulesForTests": ["sql-test"],
       "note": "sql-core 可单独引入，也包含在 starter 中；查 DSL/实现细节时可额外 sync sql-core"
     },
@@ -31,7 +31,7 @@
         "springBoot3": ["mybatis-plus-core", "mybatis-plus-extension", "mybatis-plus-spring-boot3-starter"],
         "springBoot4": ["mybatis-plus-core", "mybatis-plus-extension", "mybatis-plus-spring-boot4-starter"]
       },
-      "versions": ["3.5.16", "3.5.15", "3.5.14"]
+      "versions": ["3.5.18.1"]
     },
     "mybatis-plus-join": {
       "github": "https://github.com/yulichang/mybatis-plus-join",
@@ -40,7 +40,7 @@
         "mybatis-plus-join-core",
         "mybatis-plus-join-boot-starter"
       ],
-      "versions": ["1.5.7", "1.5.6"]
+      "versions": ["1.5.9"]
     }
   }
 }
