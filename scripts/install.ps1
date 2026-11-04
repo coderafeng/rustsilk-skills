@@ -1,4 +1,4 @@
-# 一键安装 rustsilk-skills 仓库内全部 Skill
+# 一键安装 rustsilk-skills 仓库内全部 Skill（目录名 = 技能名，均为 rs-<主题名>）
 # 用法:
 #   .\scripts\install.ps1                 # 用户级 Cursor（默认）
 #   .\scripts\install.ps1 -Target Codex
@@ -17,19 +17,17 @@ $Root = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 function Install-Skills {
     param([string]$DestBase)
 
-    $pairs = @(
-        @{ Src = "rustsilk-skills-easy-query"; Name = "rustsilk-easy-query" },
-        @{ Src = "rustsilk-skills-mybatis-plus"; Name = "rustsilk-mybatis-plus" }
-    )
+    # 目录名 = 技能名 = SKILL.md 的 name，新增 Skill 只需追加一个名字
+    $skills = @("rs-easy-query", "rs-mybatis-plus", "rs-rec-video")
 
     New-Item -ItemType Directory -Force -Path $DestBase | Out-Null
 
-    foreach ($p in $pairs) {
-        $src = Join-Path $Root $p.Src
-        $dest = Join-Path $DestBase $p.Name
+    foreach ($name in $skills) {
+        $src = Join-Path $Root $name
+        $dest = Join-Path $DestBase $name
         if (Test-Path $dest) { Remove-Item -Recurse -Force $dest }
         Copy-Item -Recurse $src $dest
-        Write-Host "  OK $($p.Name) -> $dest"
+        Write-Host "  OK $name -> $dest"
     }
 }
 

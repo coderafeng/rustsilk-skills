@@ -1,9 +1,10 @@
 # rustsilk-skills
 
-面向 **Cursor / Codex / Claude Code Agent** 的 Java 领域 Skill 集合，帮助 AI 在编码场景中准确回答框架使用、配置与排错问题，减少 API 幻觉与空泛建议。
+面向 **Cursor / Codex / Claude Code Agent** 的 Skill 集合（以 Java 框架为主，另含工程交付类技能），帮助 AI 在编码场景中准确回答框架使用、配置与排错问题，减少 API 幻觉与空泛建议。
 
-- 仓库内每个子目录为一个独立 Skill，命名前缀 **`rustsilk-skills-*`**
-- 每个 Skill 含 **`SKILL.md`**（核心约束与回答流程）及可选 **`references/`**（按需展开的专题文档）
+- 仓库内每个子目录为一个独立 Skill，命名前缀 **`rs-*`**（如 `rs-easy-query`），且**目录名 = `SKILL.md` 的 `name` = 安装后的目录名**
+- 每个 Skill 含 **`SKILL.md`**（核心约束与回答流程），以及按需展开的专题文档（ORM 两个放 **`references/`**，`rs-rec-video` 平铺在技能根目录）与 **`scripts/`**
+- 每个 Skill 均自带 **`agent-compat.md`** 与 **`scripts/link-agents.mjs`**，拷去任一 agent 都能自包含分发；唯一源是 `rs-rec-video/` 那两份，其余由 `scripts/sync-agent-compat.mjs` 生成
 - 默认服务 **中文 Java 开发者**，**Spring Boot 优先**，编码示例优先于概念介绍
 
 ---
@@ -12,20 +13,24 @@
 
 | Skill | 典型触发词 | 功能描述 |
 |-------|------------|----------|
-| `rustsilk-easy-query` | `eq`、`easy-query`、`EasyEntityQuery`、`easyEntityQuery`、`Navigate`、`selectAutoInclude`、`include`、`toSQLResult` | easy-query ORM：DSL、`EasyEntityQuery`、Navigate 导航、DTO/结构化返回、SQL 预览、`asTreeCTE`、代理/`@EntityProxy`/`sql-processor`、Spring Boot 配置与排错。 |
-| `rustsilk-mybatis-plus` | `mybatis`、`mybatis-plus`、`MP`、`MPJ`、`baomidou`、`selectJoinList`、`MPJLambdaWrapper` | MyBatis-Plus + MPJ：Wrapper、分页、`MPJBaseMapper`、连表与 `selectCollection`、SQL 日志、starter/jsqlparser、连表 DTO 与排错。 |
+| `rs-easy-query` | `eq`、`easy-query`、`EasyEntityQuery`、`easyEntityQuery`、`Navigate`、`selectAutoInclude`、`include`、`toSQLResult` | easy-query ORM：DSL、`EasyEntityQuery`、Navigate 导航、DTO/结构化返回、SQL 预览、`asTreeCTE`、代理/`@EntityProxy`/`sql-processor`、Spring Boot 配置与排错。 |
+| `rs-mybatis-plus` | `mybatis`、`mybatis-plus`、`MP`、`MPJ`、`baomidou`、`selectJoinList`、`MPJLambdaWrapper` | MyBatis-Plus + MPJ：Wrapper、分页、`MPJBaseMapper`、连表与 `selectCollection`、SQL 日志、starter/jsqlparser、连表 DTO 与排错。 |
+| `rs-rec-video` | 录教程视频、业务流程演示视频、产品功能走查、录屏演示、配音旁白、抽帧验收、`make a demo video` | 产品使用教程录屏：业务流程先书面确认 → 时长标定 → 事实探测 → 一条主摄 + 时间轴切片 → 录后数据还原 → 逐段与全片量化验收；含跨 agent 分发与抽帧体检脚本。 |
 
-> 源码目录：`rustsilk-skills-<主题>/`。新增 Skill 时创建对应子目录并追加一行。
+> 源码目录：`rs-<主题名>/`。新增 Skill 时创建对应子目录并追加一行。
 
 ### 如何选择 Skill
 
 | 你的问题涉及… | 应触发的 Skill |
 |---------------|----------------|
-| easy-query / eq / `EasyEntityQuery` / `easyEntityQuery` / `Navigate` / 代理 APT | `rustsilk-easy-query` |
-| MyBatis / MyBatis-Plus / MPJ / `BaseMapper` / `MPJLambdaWrapper` | `rustsilk-mybatis-plus` |
-| 「JPA 和 MyBatis 哪个好」等框架选型对比 | **均不触发**（Skill 不覆盖 ORM 对比） |
+| easy-query / eq / `EasyEntityQuery` / `easyEntityQuery` / `Navigate` / 代理 APT | `rs-easy-query` |
+| MyBatis / MyBatis-Plus / MPJ / `BaseMapper` / `MPJLambdaWrapper` | `rs-mybatis-plus` |
+| 录屏教程 / 产品演示视频 / 业务流程走查 / 配音与抽帧验收 | `rs-rec-video` |
+| 「JPA 和 MyBatis 哪个好」等 ORM 框架选型对比 | **不触发 ORM 两个 Skill**（它们不覆盖框架对比；要录演示视频仍走 `rs-rec-video`） |
 
-两个 Skill 可同时安装；Agent 会根据问题中的框架关键词自动选择。
+三个 Skill 可同时安装；Agent 会根据问题中的关键词自动选择。
+
+> `rs-rec-video` 与 ORM 两个 Skill 不同领域（视频录制与验收），正文不依赖 `vendor/` 源码缓存；运行 `scripts/` 下的体检与抽帧脚本需 **Node.js 18+ 与 ffmpeg/ffprobe**。
 
 ---
 
@@ -41,10 +46,14 @@ rustsilk-skills/
 ├── scripts/
 │   ├── install.sh
 │   ├── install.ps1
+│   ├── sync-agent-compat.mjs    # 把跨 agent 分发公共文件同步到各 rs-* 技能
 │   ├── sync-vendor-sources.sh   # Maven sources → vendor/
 │   └── scan-pom-versions.py     # 扫描 pom 更新 versions.json
-├── rustsilk-skills-easy-query/
+├── rs-easy-query/
 │   ├── SKILL.md
+│   ├── agent-compat.md            # 由 sync-agent-compat.mjs 生成，勿手工编辑
+│   ├── scripts/
+│   │   └── link-agents.mjs        # 同上
 │   └── references/
 │       ├── core-api.md
 │       ├── spring-boot-setup.md
@@ -54,8 +63,11 @@ rustsilk-skills/
 │       ├── cte-and-tree.md
 │       ├── troubleshooting.md
 │       └── plugin-and-apt.md
-├── rustsilk-skills-mybatis-plus/
+├── rs-mybatis-plus/
 │   ├── SKILL.md
+│   ├── agent-compat.md            # 由 sync-agent-compat.mjs 生成，勿手工编辑
+│   ├── scripts/
+│   │   └── link-agents.mjs        # 同上
 │   └── references/
 │       ├── core-api.md
 │       ├── spring-boot-setup.md
@@ -64,7 +76,18 @@ rustsilk-skills/
 │       ├── dto-mapping.md
 │       ├── sql-preview-and-testing.md
 │       └── troubleshooting.md
-└── rustsilk-skills-xxx/          # 后续 Skill（预留）
+├── rs-rec-video/
+│   ├── SKILL.md
+│   ├── agent-compat.md            # ← 两份公共文件的唯一源
+│   ├── data-reproducibility.md
+│   ├── pitfalls.md
+│   ├── verification.md
+│   └── scripts/
+│       ├── contact-sheet.mjs
+│       ├── link-agents.mjs        # ← 唯一源
+│       ├── timeline.mjs
+│       └── verify-film.mjs
+└── rs-xxx/                   # 后续 Skill（预留）
 ```
 
 ---
@@ -85,7 +108,7 @@ rustsilk-skills/
 
 ### 一键安装（推荐）
 
-在仓库根目录执行脚本，自动扫描并安装全部 `rustsilk-skills-*` 子目录：
+在仓库根目录执行脚本，按脚本内置清单安装全部 Skill（新增 Skill 后需在 `install.sh` / `install.ps1` 各追加一行）：
 
 ```bash
 # Bash — 用户级 Cursor（默认）
@@ -165,20 +188,23 @@ cd rustsilk-skills && git pull && ./scripts/install.sh --all
 ```bash
 # Linux / macOS / Git Bash — Cursor 用户级
 mkdir -p ~/.cursor/skills
-cp -r rustsilk-skills-easy-query ~/.cursor/skills/rustsilk-easy-query
-cp -r rustsilk-skills-mybatis-plus ~/.cursor/skills/rustsilk-mybatis-plus
+cp -r rs-easy-query ~/.cursor/skills/rs-easy-query
+cp -r rs-mybatis-plus ~/.cursor/skills/rs-mybatis-plus
+cp -r rs-rec-video ~/.cursor/skills/rs-rec-video
 
 # 项目级
 mkdir -p .cursor/skills
-cp -r rustsilk-skills-easy-query .cursor/skills/rustsilk-easy-query
-cp -r rustsilk-skills-mybatis-plus .cursor/skills/rustsilk-mybatis-plus
+cp -r rs-easy-query .cursor/skills/rs-easy-query
+cp -r rs-mybatis-plus .cursor/skills/rs-mybatis-plus
+cp -r rs-rec-video .cursor/skills/rs-rec-video
 ```
 
 ```powershell
 # Windows PowerShell — Cursor 用户级
 New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.cursor\skills"
-Copy-Item -Recurse rustsilk-skills-easy-query "$env:USERPROFILE\.cursor\skills\rustsilk-easy-query"
-Copy-Item -Recurse rustsilk-skills-mybatis-plus "$env:USERPROFILE\.cursor\skills\rustsilk-mybatis-plus"
+Copy-Item -Recurse rs-easy-query "$env:USERPROFILE\.cursor\skills\rs-easy-query"
+Copy-Item -Recurse rs-mybatis-plus "$env:USERPROFILE\.cursor\skills\rs-mybatis-plus"
+Copy-Item -Recurse rs-rec-video "$env:USERPROFILE\.cursor\skills\rs-rec-video"
 ```
 
 ### 各平台路径
@@ -198,9 +224,11 @@ Copy-Item -Recurse rustsilk-skills-mybatis-plus "$env:USERPROFILE\.cursor\skills
 ### 只安装某一个 Skill
 
 ```bash
-cp -r rustsilk-skills-easy-query ~/.cursor/skills/rustsilk-easy-query
+cp -r rs-easy-query ~/.cursor/skills/rs-easy-query
 # 或
-cp -r rustsilk-skills-mybatis-plus ~/.cursor/skills/rustsilk-mybatis-plus
+cp -r rs-mybatis-plus ~/.cursor/skills/rs-mybatis-plus
+# 或
+cp -r rs-rec-video ~/.cursor/skills/rs-rec-video
 ```
 
 ---
@@ -362,6 +390,12 @@ Skill 由 Agent **自动触发**，一般无需手动 `@` 引用。
 - `selectJoinList` 报错，Mapper 要继承什么？
 - 开发环境怎么打印 SQL？
 
+**产品教程视频**
+
+- 把「新建档案 → 排班 → 导出报表」这条流程录成 90 秒带旁白的教程视频
+- 教程视频里插几张引导卡合适？卡片停留多久？
+- 成片验收要查哪些硬门槛？怎么逐段抽帧？
+
 ### 触发建议
 
 带上 **框架名 + 场景** 即可；有 `pom.xml` 在 workspace 里时 Agent 会自己读版本。
@@ -372,8 +406,9 @@ Skill 由 Agent **自动触发**，一般无需手动 `@` 引用。
 
 | Skill | 合格回答应… |
 |-------|-------------|
-| `rustsilk-easy-query` | 优先 `EasyEntityQuery`；区分 `include` / `selectAutoInclude` / `toSQLResult`；不编造 eq API |
-| `rustsilk-mybatis-plus` | 单表用 `LambdaQueryWrapper`，连表用 `MPJLambdaWrapper` + `selectJoinList`；说明 `getSqlSegment` 仅为片段 |
+| `rs-easy-query` | 优先 `EasyEntityQuery`；区分 `include` / `selectAutoInclude` / `toSQLResult`；不编造 eq API |
+| `rs-mybatis-plus` | 单表用 `LambdaQueryWrapper`，连表用 `MPJLambdaWrapper` + `selectJoinList`；说明 `getSqlSegment` 仅为片段 |
+| `rs-rec-video` | 先要业务流程文档与片段计划确认；旁白只说画面真实存在的内容；交付附实测数字（时长/覆盖率/断言条数/抽帧张数） |
 
 ---
 
@@ -381,10 +416,34 @@ Skill 由 Agent **自动触发**，一般无需手动 `@` 引用。
 
 ### 新增 Skill 步骤
 
-1. 创建 `rustsilk-skills-<主题>/`
-2. 编写 `SKILL.md`（frontmatter 含 `name`、`description`；description 写清触发场景）
+1. 创建 `rs-<主题名>/`（目录名即技能名）
+2. 编写 `SKILL.md`（frontmatter 含 `name`、`description`；description 写清触发场景）；`name` 必须与目录名完全相同
 3. 专题示例、排查清单放入 `references/`，主文件保持精简（progressive disclosure）
-4. 更新本 README **Skill 列表** 与 **目录结构**
+4. 更新本 README **Skill 列表**、**如何选择 Skill**、**目录结构** 与 **验证 Skill 是否生效**
+5. 把技能名追加到 `scripts/install.sh` 与 `scripts/install.ps1` 的技能名单（目录名即技能名，无需再写映射）
+6. 运行 `node scripts/sync-agent-compat.mjs --apply` 生成该技能的 `agent-compat.md` 与 `scripts/link-agents.mjs`（源为 `rs-rec-video/`）
+
+### 跨 Agent 分发
+
+除仓库根的安装脚本外，每个技能自带一份 `scripts/link-agents.mjs`，可把它分发到 Claude Code / Cursor / Codex / Qoder 等各 agent 的项目级或用户级目录（默认 dry-run）：
+
+```bash
+# 在本仓库根执行：先看计划，确认无误后加 --apply
+node rs-easy-query/scripts/link-agents.mjs --agent claude-code,cursor,qoder --scope project
+node rs-rec-video/scripts/link-agents.mjs --agent all --scope project --mode copy --apply
+```
+
+两条路径的区别：`install.sh` / `install.ps1` 只写 Cursor / Codex / Claude 三个用户级目录（需同步改两处名单）；`link-agents.mjs` 按技能目录自定位，覆盖 11 个 agent，且技能被拷进任意项目后仍可用。
+
+两份公共文件（`agent-compat.md`、`scripts/link-agents.mjs`）在所有 `rs-*` 技能里是生成副本，**不要手工编辑**：
+
+```bash
+node scripts/sync-agent-compat.mjs            # dry-run，看哪些副本需新建/覆盖
+node scripts/sync-agent-compat.mjs --apply    # 从 rs-rec-video 重新生成
+node scripts/sync-agent-compat.mjs --check    # 只校验，漂移则 exit 1（提交前把关）
+```
+
+各 agent 的目录约定、加载差异与已知坑见任一技能下的 `agent-compat.md`。
 
 ### 设计原则
 
@@ -413,6 +472,10 @@ Skill 由 Agent **自动触发**，一般无需手动 `@` 引用。
 
 - [介绍与快速开始](https://mybatis-plus-join.github.io/pages/quickstart/introduce.html)
 - [GitHub — yulichang/mybatis-plus-join](https://github.com/yulichang/mybatis-plus-join)
+
+### Skill 本身依赖的规范
+
+- [Agent Skills 开放规范](https://agentskills.io/specification) — `rs-rec-video` 的跨 agent 目录约定与分发脚本依据，详见 [rs-rec-video/agent-compat.md](./rs-rec-video/agent-compat.md)。
 
 ---
 

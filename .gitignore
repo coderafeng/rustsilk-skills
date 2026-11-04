@@ -6,7 +6,7 @@ Thumbs.db
 .idea/
 .vscode/
 
-# 安装脚本生成的 Cursor 项目级目录（源 Skill 在 rustsilk-skills-* 下）
+# 安装脚本生成的 Cursor 项目级目录（源 Skill 在仓库根的 rs-* 下）
 .cursor/
 
 # Maven 解压后的框架源码缓存（manifest: vendor/versions.json 入库）

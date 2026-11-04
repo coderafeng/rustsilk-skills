@@ -1,5 +1,5 @@
 ---
-name: rustsilk-easy-query
+name: rs-easy-query
 description: >
   easy-query (eq) ORM 专家 skill，面向中文 Java / Spring Boot 编码场景。
   当用户询问 easy-query 的查询 DSL、EasyEntityQuery/easyEntityQuery、selectAutoInclude、
@@ -8,6 +8,7 @@ description: >
   编译/Proxy 未生成、更新删除、子查询/any/groupJoin、IDEA 插件时使用。
   即使用户只说「eq」「easy query」「easy-query」「EasyEntityQuery」「Navigate」「dromara easy-query」也应触发。
   不用于 JPA/Hibernate/MyBatis 对比或无关 ORM 讨论。
+compatibility: 回答本身不依赖任何外部工具；运行 scripts/link-agents.mjs 分发到各 agent 目录需要 Node.js 18+。文中 `vendor/` 源码缓存只存在于 rustsilk-skills 仓库内。
 ---
 
 # easy-query Agent Skill
@@ -22,7 +23,7 @@ description: >
 
 用户提到版本号，或工作区 `pom.xml` / 依赖可读出版本时，**按该版本**向下查找，无需用户额外说明「用 vendor」：
 
-1. **`vendor/<framework>/<version>/`** — 若本仓库已 sync（见 [vendor/versions.json](../../vendor/versions.json)）
+1. **`vendor/<framework>/<version>/`** — 仅在本仓库（rustsilk-skills）内由 `scripts/sync-vendor-sources.sh` 生成；技能被单独装进 agent 目录时没有该缓存，直接从第 2 步开始
 2. **`~/.m2/.../{artifactId}-{version}-sources.jar`** — 无则建议 `mvn dependency:get -Dartifact=...:jar:sources`
 3. **GitHub 对应 tag**（非 main）— [dromara/easy-query](https://github.com/dromara/easy-query) 的 `sql-test/`
 4. **easy-query-doc** — https://www.easy-query.com/easy-query-doc/
@@ -248,3 +249,16 @@ List<BlogEntity> list = easyQueryClient.queryable(BlogEntity.class)
 ```
 
 </details>
+
+## 跨 Agent 分发
+
+本技能按 [Agent Skills 开放规范](https://agentskills.io/specification) 编写（`SKILL.md` + `references/` + `scripts/`），目录名、frontmatter `name` 与安装后的目录名三者一致，各 agent 只需把它放进自己的约定目录即可发现：
+
+```bash
+# 在项目根目录执行；先看计划再加 --apply 真正写入
+node skills/rs-easy-query/scripts/link-agents.mjs --agent claude-code,cursor,codex --scope project
+```
+
+各 agent 的项目级 / 用户级目录路径、加载差异与核实来源见 [agent-compat.md](agent-compat.md)。
+
+在本仓库内开发时用仓库根的 `scripts/install.sh` / `install.ps1` 安装；`scripts/link-agents.mjs` 面向「技能已拷入其它项目、或需要覆盖 Cursor 之外的 agent」的场景。`agent-compat.md` 与本目录下的 `scripts/link-agents.mjs` 属生成副本，唯一源在 `rs-rec-video/`，由仓库根 `scripts/sync-agent-compat.mjs` 同步，**禁止手工编辑**。

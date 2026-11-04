@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 一键安装 rustsilk-skills 仓库内全部 Skill
+# 一键安装 rustsilk-skills 仓库内全部 Skill（目录名 = 技能名，均为 rs-<主题名>）
 # 用法:
 #   ./scripts/install.sh              # 安装到用户级 ~/.cursor/skills（默认）
 #   ./scripts/install.sh --cursor     # 同上
@@ -67,8 +67,12 @@ install_one() {
 install_skills() {
   local platform="$1"
   echo ">>> 安装到 ${platform} ..."
-  install_one "$platform" "$ROOT/rustsilk-skills-easy-query" "rustsilk-easy-query"
-  install_one "$platform" "$ROOT/rustsilk-skills-mybatis-plus" "rustsilk-mybatis-plus"
+  # 目录名 = 技能名 = SKILL.md 的 name，新增 Skill 只需追加一个名字
+  local skills=(rs-easy-query rs-mybatis-plus rs-rec-video)
+  local s
+  for s in "${skills[@]}"; do
+    install_one "$platform" "$ROOT/$s" "$s"
+  done
 }
 
 echo "rustsilk-skills 安装脚本"
