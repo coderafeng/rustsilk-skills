@@ -134,5 +134,5 @@ for (let s = 0; s < nSheets; s++) {
     buildSheet(slice, dst);
     console.log(`表 ${s + 1}/${nSheets}（${slice.length} 格，行优先）-> ${path.basename(dst)}`);
 }
-console.log(`输出目录 ${dstDir}；目视必查五项：字幕胶囊文字 / 当前登录身份 / 旁白提到的控件是否在画面里 / 下拉是否展开 / 所点导航项是否在可视区内`);
+console.log(`输出目录 ${dstDir}；目视必查六项：字幕胶囊文字 / 当前登录身份 / 旁白提到的控件是否在画面里 / 下拉是否展开 / 所点导航项是否在可视区内 / 含弹框字段旁白的段在段尾帧上弹框是否还在屏（见 verification.md §3）`);
 if (failed.length) process.exitCode = 1;
